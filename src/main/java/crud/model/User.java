@@ -4,9 +4,9 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
-@Component
+@Component("prototype")
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue

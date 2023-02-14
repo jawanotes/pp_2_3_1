@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div>
+    <!--  <th:block th:each="msg : ${messages}">
+        <h1 th:text="${msg}"></h1>
+      </th:block>-->
+    <table>
+        <thead>
+        <tr>
+            <!--            <th th:text="#{msgs.headers.name}">Name</th>
+                        <th th:text="#{msgs.headers.Color}">Color</th>
+                        <th th:text="#{msgs.headers.Sentence}">Sentence</th>-->
+            <th th>ID</th>
+            <th th>Name</th>
+            <th th>LastName</th>
+            <th th> </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="array: ${userlist}">
+            <td th:text="${array.getId()}"/>
+            <td th:text="${array.getName()}"/>
+            <td th:text="${array.getLastName()}"/>
+<!--            <td th:text="${array[0]}"/>
+            <td th:text="${array[1]}"/>
+            <td th:text="${array[2]}"/>-->
+            <!--      <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getName()}">user</a>-->
+            <td><a th:href="@{/edit{id}(id=${array.getId()})}" th:text="${array.getName()}">user</a></td>
+
+            <!--      <td><button th:value="${array}" />Edit</td>-->
+<!--            <td>
+                <a th:href="/edit">
+                    &lt;!&ndash;        <input type="button" th:value="${array}"/>&ndash;&gt;
+                    <button th:value="${array}"/>
+                </a>
+            </td>-->
+
+            <!--      <p style="text-align: center"><button onclick=<a href="/edit">" >Кнопка с текстом</button></p>-->
+            <!--        <tr th:each="prod: ${allProducts}">
+                        <td th:text="${prod.name}">Oranges</td>
+                        <td th:text="${#numbers.formatDecimal(prod.price, 1, 2)}">0.99</td>-->
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

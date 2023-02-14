@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+  <table>
+    <thead>
+    <tr>
+      <!--            <th th:text="#{msgs.headers.name}">Name</th>
+                  <th th:text="#{msgs.headers.Color}">Color</th>
+                  <th th:text="#{msgs.headers.Sentence}">Sentence</th>-->
+      <th th>ID</th>
+      <th th>Name</th>
+      <th th>LastName</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <th th:text="${user.getId()}"></th>
+      <th th:text="${user.getName()}"></th>
+    </tr>
+    <tr th:each="array: ${userlist}">
+
+<!--      <td th:text="${array[0]}"/>
+      <td th:text="${array[1]}"/>
+      <td th:text="${array[2]}"/>-->
+
+<!--      <td><button th:value="${array}" />Edit</td>
+      <td>
+        <a th:href="/edit">
+          <input type="button" th:value="${array}"/>
+        </a>
+      </td>-->
+
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
