@@ -3,7 +3,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>List of users. One page to rule them all.</title>
 </head>
 <body>
 <div>
@@ -20,6 +20,7 @@
             <th th>Name</th>
             <th th>LastName</th>
             <th th> </th>
+            <th th> </th>
         </tr>
         </thead>
         <tbody>
@@ -31,7 +32,14 @@
             <td th:text="${array[1]}"/>
             <td th:text="${array[2]}"/>-->
             <!--      <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getName()}">user</a>-->
-            <td><a th:href="@{/edit{id}(id=${array.getId()})}" th:text="${array.getName()}">user</a></td>
+<!--            <td><a th:href="@{/edit{id}(id=${array.getId()})}" th:text="${array.getName()}">user</a></td>-->
+<!--            <td><a th:href="@{/edit/{id}(id=${array.getId()})}" >Edit</a></td>-->
+            <td><a th:href="@{/{id}/edit(id=${array.getId()})}">Edit</a></td>
+            <td>
+                <form th:method="DELETE" th:action="@{/{id}(id=${array.getId()})}">
+                    <input type="submit" value="Delete"/>
+                </form>
+            </td>>
 
             <!--      <td><button th:value="${array}" />Edit</td>-->
 <!--            <td>
@@ -49,5 +57,9 @@
         </tbody>
     </table>
 </div>
+
+<br/>
+<hr/>
+<a href="/new">Create new person</a>
 </body>
 </html>

@@ -6,12 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-//import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
 import java.util.List;
 
 @Repository
@@ -31,11 +26,10 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addUser(User user) {
-/*        EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();*/
-        entityManager.persist(user);
-        //transaction.commit();
-        entityManager.detach(user);
+        entityManager.persist(user); // cannot flush() here...
+        /*
+        entityManager.flush();
+        entityManager.detach(user);*/
     }
 /*    @Override
     public User getUser(Long id) {
@@ -57,25 +51,23 @@ public class UserDaoImpl implements UserDao {
     }*/
     @Override
     public void deleteUser(User user) {
-/*        EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();*/
+        user = entityManager.merge(user);
         entityManager.remove(user);
-        //entityManager.flush();
-        //transaction.commit();
     }
     @Override
     public void updateUser(User user) {
 /*        EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();*/
-        entityManager.merge(user);
-        //transaction.commit();
+        transaction.begin();
+        transaction.commit();*/
+        user = entityManager.merge(user);
+        entityManager.flush();
         entityManager.detach(user);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<?> getAllUsers() {
-        String query = "select * from users;";
+        //String query = "select * from users;";
         //EntityTransaction transaction = entityManager.getTransaction();
 
 /*        CriteriaQuery<User> cr = entityManager.getCriteriaBuilder().createQuery(User.class);
@@ -91,9 +83,9 @@ public class UserDaoImpl implements UserDao {
         //List<User> results = entityManager.getCriteriaBuilder().createQuery(User.class).getSelection().getResultList();
 
         //List<?> userList = entityManager.createNativeQuery(query).getResultList();
-        List<?> userList = entityManager.createQuery("SELECT u FROM User u", User.class).getResultList(); // Error "User is not mapped"
-        //return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
-        return userList;
+        //List<?> userList = entityManager.createQuery("SELECT u FROM User u", User.class).getResultList(); // Error "User is not mapped"
+        return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
+        //return userList;
 
     }
 }

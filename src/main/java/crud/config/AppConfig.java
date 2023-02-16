@@ -1,17 +1,11 @@
 package crud.config;
 
-import com.mysql.cj.Session;
 import crud.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -24,7 +18,6 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -44,6 +37,17 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     @Bean
+    public DataSource makeDbcp2DataSource() {
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setDriverClassName(envt.getProperty("db.driver"));
+        basicDataSource.setUrl(envt.getProperty("db.url"));
+        basicDataSource.setUsername(envt.getProperty("db.username"));
+        basicDataSource.setPassword(envt.getProperty("db.password"));
+        return basicDataSource;
+    }
+
+    @Bean
+    @Primary
     public DataSource makeDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(envt.getProperty("db.driver"));
@@ -66,6 +70,8 @@ public class AppConfig implements WebMvcConfigurer {
         props.put("hibernate.show_sql", envt.getProperty("hibernate.show_sql"));
         props.put("hibernate.hbm2ddl.auto", envt.getProperty("hibernate.hbm2ddl.auto"));
         props.put("hibernate.dialect", envt.getProperty("hibernate.dialect"));
+        props.put("characterEncoding", envt.getProperty("characterEncoding"));
+        props.put("useUnicode", envt.getProperty("useUnicode"));
         emfb.setJpaProperties(props);
 
         return emfb;
@@ -78,10 +84,11 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Bean
     public JpaTransactionManager getTransactionManager() {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
+/*        JpaTransactionManager transactionManager = new JpaTransactionManager();
         //HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         //transactionManager.setSessionFactory(getSessionFactory().getObject());
-        return transactionManager;
+        return transactionManager;*/
+        return new JpaTransactionManager();
     }
 
     @Bean
