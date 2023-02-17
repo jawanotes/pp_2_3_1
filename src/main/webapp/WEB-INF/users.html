@@ -34,12 +34,25 @@
             <!--      <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getName()}">user</a>-->
 <!--            <td><a th:href="@{/edit{id}(id=${array.getId()})}" th:text="${array.getName()}">user</a></td>-->
 <!--            <td><a th:href="@{/edit/{id}(id=${array.getId()})}" >Edit</a></td>-->
-            <td><a th:href="@{/{id}/edit(id=${array.getId()})}">Edit</a></td>
             <td>
-                <form th:method="DELETE" th:action="@{/{id}(id=${array.getId()})}">
+<!--                <a th:href="@{/{id}/edit(id=${array.getId()})}">Edit</a>-->
+                <a th:href="@{/edit(id=${array.getId()})}">Edit</a>
+            </td>
+            <td>
+<!--                <form th:method="DELETE"
+                      th:action="@{/{id}(id=${array.getId()})}">
                     <input type="submit" value="Delete"/>
+                </form>-->
+                <form th:method="POST"
+                      th:action="@{/delete(id=${array.getId()})}"
+                >
+                <!--                      th:action="@{/{id}(id=${array.getId()})}"-->
+                    <!--<input class="button button-block"-->
+                    <input class="button"
+                           type="submit"
+                           value="Delete"/>
                 </form>
-            </td>>
+            </td>
 
             <!--      <td><button th:value="${array}" />Edit</td>-->
 <!--            <td>

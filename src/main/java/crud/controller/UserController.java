@@ -21,12 +21,19 @@ public class UserController {
         model.addAttribute("userlist", userService.getAllUsers());
         return "users";
     }
-    @GetMapping("/{id}/edit")
+/*    @GetMapping("/{id}/edit")
     public String editPage(@PathVariable("id") Long id, ModelMap model) {
         //@RequestParam(value = "id", required = true) Integer id
         User user = new User();
         user.setId(id);
         model.addAttribute("user", userService.getUser(user));
+        return "edit";
+    }*/
+    @GetMapping("/edit")
+    public String editPage(@RequestParam(value = "id", required = true) Long id, ModelMap model) {
+        /*User user = new User();
+        user.setId(id);*/
+        model.addAttribute("user", userService.getUser(id));
         return "edit";
     }
 
@@ -36,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/addnew")
-    public String create(@ModelAttribute("user") User user) {
+    public String createUser(@ModelAttribute("user") User user) {
         userService.addUser(user);
         return "redirect:/users";
     }
@@ -47,16 +54,29 @@ public class UserController {
         return "people/edit";
     }*/
 
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
+/*    @PostMapping("/update/{id}")
+    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
+        userService.updateUser(user);
+        return "redirect:/users";
+    }*/
+    @PostMapping("/update")
+    public String updateUser(@ModelAttribute("user") User user) {
         userService.updateUser(user);
         return "redirect:/users";
     }
 
-    @DeleteMapping("/{id}")
+/*    @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
         User user = new User();
         user.setId(id);
+        userService.deleteUser(user);
+        return "redirect:/users";
+    }*/
+    @PostMapping("/delete")
+    //public String deleteUser(@RequestParam(value = "id", required = true) Long id) {
+    public String deleteUser(@ModelAttribute("user") User user) {
+        /*User user = new User();
+        user.setId(id);*/
         userService.deleteUser(user);
         return "redirect:/users";
     }

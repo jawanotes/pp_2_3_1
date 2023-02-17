@@ -31,18 +31,19 @@ public class UserDaoImpl implements UserDao {
         entityManager.flush();
         entityManager.detach(user);*/
     }
-/*    @Override
+    @Override
     public User getUser(Long id) {
-        entityManager.find(User.class, user);
-        return null;
-    }*/
+        User result = entityManager.find(User.class, id);
+        entityManager.detach(result);
+        return result;
+    }
 
     @Override
     public User getUser(User user) {
-        User result = entityManager.find(User.class, user.getId());
-        //return entityManager.getReference(User.class, user.getId());
+        /*User result = entityManager.find(User.class, user.getId());
         entityManager.detach(result);
-        return result;
+        return result;*/
+        return getUser(user.getId());
     }
 
 /*    @Override
@@ -54,6 +55,11 @@ public class UserDaoImpl implements UserDao {
         user = entityManager.merge(user);
         entityManager.remove(user);
     }
+
+    /**
+     * Никита Нестеренко: Зачем тут merge?
+     * Константин Харин: Ответил в readme.md
+     */
     @Override
     public void updateUser(User user) {
 /*        EntityTransaction transaction = entityManager.getTransaction();
