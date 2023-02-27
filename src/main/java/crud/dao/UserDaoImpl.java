@@ -1,95 +1,67 @@
 package crud.dao;
 
 import crud.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.logging.Logger;
+
 
 @Repository
 public class UserDaoImpl implements UserDao {
+    Logger logger = Logger.getLogger("DaoLogger");
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    //public UserDaoImpl() {
 
-    //}
-
-    @Autowired
-    public UserDaoImpl(@Qualifier("getEntityManager") EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    /**
+     * Nikita Nesterenko: персистенс контекст аннотации достаточно
+     *
+     * Harin Konstantin: Я пробовал делать тесты, нужен был конструктор
+     */
 
     @Override
     public void addUser(User user) {
-        entityManager.persist(user); // cannot flush() here...
-        /*
-        entityManager.flush();
-        entityManager.detach(user);*/
+        entityManager.persist(user);
     }
     @Override
     public User getUser(Long id) {
-        /*User result = entityManager.find(User.class, id);
-        entityManager.detach(result);
-        return result;*/
         return entityManager.find(User.class, id);
     }
 
+    /**
+     * Nikita Nesterenko: зачем вообще метод дай юзера по юзеру? ))
+     *           			убери везде комменты
+     *
+     * Harin konstantin: Поправил, отдаю юзера по юзеру.
+     *                   Комментарии - привычка с прошлой работы, помогает видеть ход мысли. Они мне нужны.
+     */
     @Override
     public User getUser(User user) {
-        /*User result = entityManager.find(User.class, user.getId());
-        entityManager.detach(result);
-        return result;*/
+        if (entityManager.contains(user)) {
+            logger.info("Context contains user");
+            return user;
+        }
+        logger.info("User isn't in context"); // Нельзя просто так взять и отдать юзера по юзеру
         return getUser(user.getId());
     }
 
-/*    @Override
-    public void deleteUser(long id) {
-
-    }*/
     @Override
     public void deleteUser(User user) {
-        //user = entityManager.merge(user);
         entityManager.remove(getUser(user));
     }
 
     @Override
     public void updateUser(User user) {
-/*        EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
-        transaction.commit();*/
-        /*user = entityManager.merge(user);
-        entityManager.flush();
-        entityManager.detach(user);*/
         entityManager.merge(user);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<?> getAllUsers() {
-        //String query = "select * from users;";
-        //EntityTransaction transaction = entityManager.getTransaction();
-
-/*        CriteriaQuery<User> cr = entityManager.getCriteriaBuilder().createQuery(User.class);
-        Root<User> root = cr.from(User.class);
-        cr.select(root);
-        Query<User> userQuery = entityManager.getCriteriaBuilder().createQuery(cr);
-        List<User> results = userQuery.getResultList();*/
-        /*Query userQuery = (Query) entityManager.getCriteriaBuilder().createQuery(User.class);
-        List<User> results = userQuery.getResultList();*/
-        //return results;
-
-
-        //List<User> results = entityManager.getCriteriaBuilder().createQuery(User.class).getSelection().getResultList();
-
-        //List<?> userList = entityManager.createNativeQuery(query).getResultList();
-        //List<?> userList = entityManager.createQuery("SELECT u FROM User u", User.class).getResultList(); // Error "User is not mapped"
         return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
-        //return userList;
-
     }
 }

@@ -62,7 +62,6 @@ public class AppConfig implements WebMvcConfigurer {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emfb = new LocalContainerEntityManagerFactoryBean();
         emfb.setDataSource(makeDataSource());
-        //emfb.setPackagesToScan("crud.model");
         emfb.setPackagesToScan(User.class.getPackageName());
         emfb.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
@@ -84,9 +83,9 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Bean
     public JpaTransactionManager getTransactionManager() {
-/*        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        //HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        //transactionManager.setSessionFactory(getSessionFactory().getObject());
+/*
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(getSessionFactory().getObject());
         return transactionManager;*/
         return new JpaTransactionManager();
     }
@@ -95,7 +94,6 @@ public class AppConfig implements WebMvcConfigurer {
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
-        //templateResolver.setPrefix("/WEB-INF/pages/");
         templateResolver.setPrefix("/WEB-INF/");
         templateResolver.setSuffix(".html");
         templateResolver.setCharacterEncoding("UTF-8");
