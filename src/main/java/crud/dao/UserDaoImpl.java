@@ -40,18 +40,18 @@ public class UserDaoImpl implements UserDao {
      *                   Комментарии - привычка с прошлой работы, помогает видеть ход мысли. Они мне нужны.
      */
     @Override
-    public User getUser(User user) {
+    public User getUserFromContext(User user) {
         if (entityManager.contains(user)) {
             logger.info("Context contains user");
             return user;
         }
-        logger.info("User isn't in context"); // Нельзя просто так взять и отдать юзера по юзеру
+        logger.info("User isn't in context");
         return getUser(user.getId());
     }
 
     @Override
     public void deleteUser(User user) {
-        entityManager.remove(getUser(user));
+        entityManager.remove(getUserFromContext(user));
     }
 
     @Override

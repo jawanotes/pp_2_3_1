@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public User getUser(User user) {
-        return userDao.getUser(user);
+        return userDao.getUserFromContext(user);
     }
 
     @Transactional(readOnly = true)
